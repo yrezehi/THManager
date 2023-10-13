@@ -20,7 +20,8 @@ namespace THManager
         public Worker(string description, Action action)
         {
             CreationTime = DateTime.Now;
-            Description = description;
+            Description = description ?? "";
+            Action = action ?? throw new ArgumentNullException($"{nameof(action)} must be provided!");
         }
 
         public void Trigger()

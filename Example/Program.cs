@@ -3,7 +3,7 @@ using THManager;
 
 Console.WriteLine("Worker Example V1.0");
 
-Worker worker = new Worker("One to hundred counter", (_) =>
+Worker worker = new Worker("One to hundred counter", () =>
 {
     Console.WriteLine("Initialized a new thread");
     Thread.Sleep(2500);
