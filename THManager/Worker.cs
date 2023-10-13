@@ -26,9 +26,6 @@ namespace THManager
 
         public void Trigger()
         {
-            Thread = new Thread(Job);
-            Thread.IsBackground = false;
-            Id = Thread.ManagedThreadId;
 
             Job = new ThreadStart(() => { 
                 Action();
@@ -36,11 +33,14 @@ namespace THManager
                     OnFinish(this, new OnFinishArguments());
             });
 
+            Thread = new Thread(Job);
+            Thread.IsBackground = false;
+            Id = Thread.ManagedThreadId;
+
             if (Thread.ThreadState == ThreadState.Unstarted)
             {
                 if (OnStart is not null)
                     OnStart(this, new OnStartArguments());
-
                 Thread.Start();
             }
         }
