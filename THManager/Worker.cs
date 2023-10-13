@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using THManager.Events;
 
 namespace THManager
 {
@@ -13,24 +9,22 @@ namespace THManager
         public readonly string Description;
         public readonly DateTime CreationTime;
 
-        public DateTime StartTime { get; set; }
-        public Thread JobThread { get; }
+        private Thread JobThread { get; }
 
-
-        public readonly ParameterizedThreadStart JonAction;
+        public event EventHandler<OnFinishArguments> OnFinish;
+        public event EventHandler<OnErrorArguments> OnOnError;
+        public event EventHandler<OnStartArguments> OnStart;
 
         public Worker(string description, ParameterizedThreadStart jobAction, bool triggerImmediately = false)
         {
             CreationTime = DateTime.Now;
             Description = description;
-            JonAction = jobAction;
 
             JobThread = new Thread(jobAction);
             Id = JobThread.ManagedThreadId;
 
             if (triggerImmediately)
             {
-                StartTime = DateTime.Now;
                 JobThread.Start();
             }
         }
@@ -39,7 +33,6 @@ namespace THManager
         {
             if (JobThread.ThreadState == ThreadState.Unstarted)
             {
-                StartTime = DateTime.Now;
                 JobThread.Start();
             }
         }
