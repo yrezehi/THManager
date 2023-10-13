@@ -3,19 +3,17 @@ using THManager;
 
 Console.WriteLine("Worker Example V1.0");
 
-Worker worker = new Worker("One to hundred counter", () =>
+WorkerManager.Spawn("One to hundred counter", () =>
 {
-    Console.WriteLine("Initialized a new thread");
-    Thread.Sleep(2500);
+    Console.WriteLine(WorkerManager.GetReport());
 });
 
-worker.OnStart += (source, @event) =>
-    Console.WriteLine($"On start: {@event.StartTime}");
+WorkerManager.Spawn("Five to hundred counter", () =>
+{
+    Console.WriteLine(WorkerManager.GetReport());
+});
 
-worker.OnError += (source, @event) =>
-    Console.WriteLine($"On error: {@event.ErrorTime}");
-
-worker.OnFinish += (source, @event) =>
-    Console.WriteLine($"On finish: {@event.FinishTime}");
-
-worker.Trigger();
+WorkerManager.Spawn("Ten to hundred counter", () =>
+{
+    Console.WriteLine(WorkerManager.GetReport());
+});

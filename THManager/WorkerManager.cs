@@ -2,14 +2,20 @@
 
 namespace THManager
 {
-    public class WorkerManager
+    public static class WorkerManager
     {
-        private ConcurrentQueue<Worker> workers = new();
+        private static ConcurrentQueue<Worker> workers = new();
 
-        public void Spawn(string description, Action action) =>
-            workers.Enqueue(new(description, action));
+        public static void Spawn(string description, Action action)
+        {
+            Worker worker = new(description, action);
 
-        public IEnumerable<string?> GetReport() =>
-            workers.AsEnumerable().Select(worker => worker.ToString());
+            worker.Trigger();
+
+            workers.Enqueue(worker);
+        }
+
+        public static string GetReport() =>
+            string.Join("\n", workers.AsEnumerable().Select(worker => worker.ToString()).ToList());
     }
 }

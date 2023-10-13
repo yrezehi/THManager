@@ -48,6 +48,5 @@ namespace THManager
 
         public override string ToString() =>
             $"{Id}: Status-{Thread.ThreadState.AsString()}";
-        
     }
 }
