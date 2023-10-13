@@ -9,41 +9,39 @@ namespace THManager
         private readonly string Description;
         private readonly DateTime CreationTime;
 
-        private Thread Job { get; }
+        private Thread Thread { get; set; }
+        private ThreadStart Job { get; set; }
+        private Action Action { get; set; }
 
         public event EventHandler<OnFinishArguments> OnFinish;
         public event EventHandler<OnErrorArguments> OnError;
         public event EventHandler<OnStartArguments> OnStart;
 
-        public Worker(string description, ParameterizedThreadStart jobAction, bool triggerImmediately = false)
+        public Worker(string description, Action action)
         {
             CreationTime = DateTime.Now;
             Description = description;
-
-            Job = new Thread(jobAction);
-            Job.IsBackground = false;
-            Id = Job.ManagedThreadId;
-
-            if (triggerImmediately)
-            {
-                StartJob();
-            }
         }
 
         public void Trigger()
         {
-            if (Job.ThreadState == ThreadState.Unstarted)
+            Thread = new Thread(Job);
+            Thread.IsBackground = false;
+            Id = Thread.ManagedThreadId;
+
+            Job = new ThreadStart(() => { 
+                Action();
+                if(OnFinish is not null)
+                    OnFinish(this, new OnFinishArguments());
+            });
+
+            if (Thread.ThreadState == ThreadState.Unstarted)
             {
-                StartJob();
+                if (OnStart is not null)
+                    OnStart(this, new OnStartArguments());
+
+                Thread.Start();
             }
-        }
-
-        private void StartJob()
-        {
-            if(OnStart is not null)
-                OnStart(this, new OnStartArguments());
-
-            Job.Start();
         }
     }
 }

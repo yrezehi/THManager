@@ -10,18 +10,12 @@ Worker worker = new Worker("One to hundred counter", (_) =>
 });
 
 worker.OnStart += (source, @event) =>
-{
     Console.WriteLine($"On start: {@event.StartTime}");
-};
 
 worker.OnError += (source, @event) =>
-{
     Console.WriteLine($"On error: {@event.ErrorTime}");
-};
 
 worker.OnFinish += (source, @event) =>
-{
     Console.WriteLine($"On finish: {@event.FinishTime}");
-};
 
 worker.Trigger();
