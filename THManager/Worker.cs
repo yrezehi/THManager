@@ -4,15 +4,15 @@ namespace THManager
 {
     public class Worker
     {
-        public int Id { get; set; }
+        private int Id { get; set; }
 
-        public readonly string Description;
-        public readonly DateTime CreationTime;
+        private readonly string Description;
+        private readonly DateTime CreationTime;
 
         private Thread JobThread { get; }
 
         public event EventHandler<OnFinishArguments> OnFinish;
-        public event EventHandler<OnErrorArguments> OnOnError;
+        public event EventHandler<OnErrorArguments> OnError;
         public event EventHandler<OnStartArguments> OnStart;
 
         public Worker(string description, ParameterizedThreadStart jobAction, bool triggerImmediately = false)
