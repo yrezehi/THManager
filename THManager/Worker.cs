@@ -1,4 +1,5 @@
 ﻿using THManager.Events;
+using THManager.Extensions;
 
 namespace THManager
 {
@@ -44,5 +45,9 @@ namespace THManager
                 Thread.Start();
             }
         }
+
+        public override string ToString() =>
+            $"{Id}: Status-{Thread.ThreadState.AsString()}";
+        
     }
 }
