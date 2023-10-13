@@ -9,10 +9,14 @@ namespace THManager
     public class Worker
     {
         public int Id { get; set; }
+
         public readonly string Description;
         public readonly DateTime CreationTime;
+
         public DateTime StartTime { get; set; }
         public Thread JobThread { get; }
+
+
         public readonly ParameterizedThreadStart JonAction;
 
         public Worker(string description, ParameterizedThreadStart jobAction, bool triggerImmediately = false)
