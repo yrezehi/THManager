@@ -9,7 +9,7 @@ namespace THManager
         private readonly string Description;
         private readonly DateTime CreationTime;
 
-        private Thread JobThread { get; }
+        private Thread Job { get; }
 
         public event EventHandler<OnFinishArguments> OnFinish;
         public event EventHandler<OnErrorArguments> OnError;
@@ -20,21 +20,30 @@ namespace THManager
             CreationTime = DateTime.Now;
             Description = description;
 
-            JobThread = new Thread(jobAction);
-            Id = JobThread.ManagedThreadId;
+            Job = new Thread(jobAction);
+            Job.IsBackground = false;
+            Id = Job.ManagedThreadId;
 
             if (triggerImmediately)
             {
-                JobThread.Start();
+                StartJob();
             }
         }
 
         public void Trigger()
         {
-            if (JobThread.ThreadState == ThreadState.Unstarted)
+            if (Job.ThreadState == ThreadState.Unstarted)
             {
-                JobThread.Start();
+                StartJob();
             }
+        }
+
+        private void StartJob()
+        {
+            if(OnStart is not null)
+                OnStart(this, new OnStartArguments());
+
+            Job.Start();
         }
     }
 }

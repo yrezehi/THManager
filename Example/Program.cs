@@ -5,7 +5,8 @@ Console.WriteLine("Worker Example V1.0");
 
 Worker worker = new Worker("One to hundred counter", (_) =>
 {
-    Thread.Sleep(1000);
+    Console.WriteLine("Initialized a new thread");
+    Thread.Sleep(2500);
 });
 
 worker.OnStart += (source, @event) =>
@@ -15,10 +16,12 @@ worker.OnStart += (source, @event) =>
 
 worker.OnError += (source, @event) =>
 {
-    Console.WriteLine($"On start: {@event.ErrorTime}");
+    Console.WriteLine($"On error: {@event.ErrorTime}");
 };
 
 worker.OnFinish += (source, @event) =>
 {
-    Console.WriteLine($"On start: {@event.FinishTime}");
+    Console.WriteLine($"On finish: {@event.FinishTime}");
 };
+
+worker.Trigger();
