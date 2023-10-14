@@ -22,7 +22,7 @@ namespace THManager
         {
             CreationTime = DateTime.Now;
             Description = description ?? "";
-            Action = action ?? throw new ArgumentNullException($"{nameof(action)} must be provided!");
+            Action = action ?? throw new ArgumentNullException($"{nameof(Action)} must be provided!");
         }
 
         public void Trigger()
